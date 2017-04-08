@@ -241,29 +241,31 @@ class qtype_qportugol_format_editor_renderer extends plugin_renderer_base {
                 $this->get_filepicker_options($context, $draftitemid));
 
         //RENDERIZA O TEXT AREA DO CÓDIGO PORTUGOL
-        $output = 'AQUI FICARA O EDITOR PORTUGOL';
+        $output = '';
+
         $output .= html_writer::start_tag('div', array('class' =>
                 $this->class_name() . ' qtype_qportugol_response'));
 
-        $output .= html_writer::tag('div', html_writer::tag('textarea', s($response),
-                array('id' => $id, 'name' => $inputname, 'rows' => $lines, 'cols' => 60)));
+        $output .= html_writer::start_tag('link', array('src' =>
+                '../../question/type/qportugol/portugol_interpreter/jquery.terminal.min.css', 'rel'=>'stylesheet'));
+        $output .= html_writer::end_tag('link');
 
-        $output .= html_writer::start_tag('div');
-        if (count($formats) == 1) {
-            reset($formats);
-            $output .= html_writer::empty_tag('input', array('type' => 'hidden',
-                    'name' => $inputname . 'format', 'value' => key($formats)));
+        //TEXT-AREA COM CODEMIRROR
+        $output .= html_writer::start_tag('textarea', array('id' =>'codigo'));
+        $output .= html_writer::end_tag('textarea');
 
-        } else {
-            $output .= html_writer::label(get_string('format'), 'menu' . $inputname . 'format', false);
-            $output .= ' ';
-            $output .= html_writer::select($formats, $inputname . 'format', $responseformat, '');
-        }
-        $output .= html_writer::end_tag('div');
+        $output .= html_writer::start_tag('input', array('type'=>'button','id'=>'exec', 'value'=>'Executar')) . html_writer::end_tag('input');
 
-        $output .= $this->filepicker_html($inputname, $draftitemid);
+        //TERMINAL
+        $output .= html_writer::start_tag('div', array('id'=>'term_demo')) . html_writer::end_tag('div');
+
+        // $output .= html_writer::end_tag('div');
 
         $output .= html_writer::end_tag('div');
+        $output .= html_writer::start_tag('script', array('src' =>
+                '../../question/type/qportugol/portugol_interpreter/main.js'));
+        $output .= html_writer::end_tag('script');
+        // echo $output; die;
         return $output;
     }
 
