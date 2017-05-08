@@ -227,6 +227,7 @@ class qtype_qportugol_format_editor_renderer extends plugin_renderer_base {
         $id = $inputname . '_id';
 
         $editor = editors_get_preferred_editor($responseformat);
+        var_dump($editor);
         $strformats = format_text_menu();
         $formats = $editor->get_supported_formats();
         foreach ($formats as $fid) {
@@ -244,14 +245,14 @@ class qtype_qportugol_format_editor_renderer extends plugin_renderer_base {
         $output = '';
 
         $output .= html_writer::start_tag('div', array('class' =>
-                $this->class_name() . ' qtype_qportugol_response'));
+                $this->class_name()));
 
         $output .= html_writer::start_tag('link', array('src' =>
                 '../../question/type/qportugol/portugol_interpreter/jquery.terminal.min.css', 'rel'=>'stylesheet'));
         $output .= html_writer::end_tag('link');
 
         //TEXT-AREA COM CODEMIRROR
-        $output .= html_writer::start_tag('textarea', array('id' =>'codigo'));
+        $output .= html_writer::start_tag('textarea', array('id' =>'codigo', 'class'=>'qtype_qportugol_response'));
         $output .= html_writer::end_tag('textarea');
 
         $output .= html_writer::start_tag('input', array('type'=>'button','id'=>'exec', 'value'=>'Executar')) . html_writer::end_tag('input');

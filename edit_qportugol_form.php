@@ -55,16 +55,6 @@ class qtype_qportugol_edit_form extends question_edit_form {
         $mform->setDefault('responsefieldlines', 15);
         $mform->disabledIf('responsefieldlines', 'responseformat', 'eq', 'noinline');
 
-        $mform->addElement('select', 'attachments',
-                get_string('allowattachments', 'qtype_qportugol'), $qtype->attachment_options());
-        $mform->setDefault('attachments', 0);
-
-        $mform->addElement('select', 'attachmentsrequired',
-                get_string('attachmentsrequired', 'qtype_qportugol'), $qtype->attachments_required_options());
-        $mform->setDefault('attachmentsrequired', 0);
-        $mform->addHelpButton('attachmentsrequired', 'attachmentsrequired', 'qtype_qportugol');
-        $mform->disabledIf('attachmentsrequired', 'attachments', 'eq', 0);
-
         $mform->addElement('header', 'responsetemplateheader', get_string('responsetemplateheader', 'qtype_qportugol'));
         $mform->addElement('editor', 'responsetemplate', get_string('responsetemplate', 'qtype_qportugol'),
                 array('rows' => 10),  array_merge($this->editoroptions, array('maxfiles' => 0)));
