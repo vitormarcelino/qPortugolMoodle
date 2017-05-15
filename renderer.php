@@ -214,8 +214,13 @@ class qtype_qportugol_format_editor_renderer extends plugin_renderer_base {
     }
 
     public function response_area_read_only($name, $qa, $step, $lines, $context) {
-        return html_writer::tag('div', $this->prepare_response($name, $qa, $step, $context),
-                array('class' => $this->class_name() . ' qtype_qportugol_response readonly'));
+        $ret = '';
+        $ret .= html_writer::end_tag('link');
+        $ret .= html_writer::tag('div', $this->prepare_response($name, $qa, $step, $context), array('id'=> 'codigo', 'class' => $this->class_name() . ' qtype_qportugol_response readonly'));
+        // $ret .= html_writer::start_tag('script', array('src' =>
+        //         '../../question/type/qportugol/portugol_interpreter/main.js'));
+        // $ret .= html_writer::end_tag('script');
+        return $ret;
     }
 
     public function response_area_input($name, $qa, $step, $lines, $context) {
@@ -227,7 +232,6 @@ class qtype_qportugol_format_editor_renderer extends plugin_renderer_base {
         $id = $inputname . '_id';
 
         $editor = editors_get_preferred_editor($responseformat);
-        var_dump($editor);
         $strformats = format_text_menu();
         $formats = $editor->get_supported_formats();
         foreach ($formats as $fid) {
@@ -241,6 +245,7 @@ class qtype_qportugol_format_editor_renderer extends plugin_renderer_base {
         $editor->use_editor($id, $this->get_editor_options($context),
                 $this->get_filepicker_options($context, $draftitemid));
 
+        /*
         //RENDERIZA O TEXT AREA DO CÓDIGO PORTUGOL
         $output = '';
 
@@ -267,6 +272,44 @@ class qtype_qportugol_format_editor_renderer extends plugin_renderer_base {
                 '../../question/type/qportugol/portugol_interpreter/main.js'));
         $output .= html_writer::end_tag('script');
         // echo $output; die;
+        */
+
+        $output = '';
+
+        $output .= html_writer::start_tag('link', array('src' =>
+                '../../question/type/qportugol/portugol_interpreter/jquery.terminal.min.css', 'rel'=>'stylesheet'));
+        $output .= html_writer::end_tag('link');
+
+        $output .= html_writer::start_tag('div', array('class' =>
+                $this->class_name() . ' qtype_qportugol_response'));
+        $output .= html_writer::tag('div', html_writer::tag('textarea', s($response),
+                array('id' => 'codigo', 'name' => $inputname, 'rows' => $lines, 'cols' => 60))); //$id
+        $output .= html_writer::start_tag('div');
+        if (count($formats) == 1) {
+            reset($formats);
+            $output .= html_writer::empty_tag('input', array('type' => 'hidden',
+                    'name' => $inputname . 'format', 'value' => key($formats)));
+        } else {
+            $output .= html_writer::label(get_string('format'), 'menu' . $inputname . 'format', false);
+            $output .= ' ';
+            $output .= html_writer::select($formats, $inputname . 'format', $responseformat, '');
+        }
+        $output .= html_writer::end_tag('div');
+        $output .= $this->filepicker_html($inputname, $draftitemid);
+        $output .= html_writer::end_tag('div');
+
+        $output .= html_writer::tag('br');
+
+        $output .= html_writer::start_tag('input', array('type'=>'button','id'=>'exec', 'value'=>'Executar')) . html_writer::end_tag('input');
+
+        $output .= html_writer::tag('br');
+
+        $output .= html_writer::start_tag('div', array('id'=>'terminal')) . html_writer::end_tag('div');
+
+        $output .= html_writer::start_tag('script', array('src' =>
+                '../../question/type/qportugol/portugol_interpreter/main.js'));
+        $output .= html_writer::end_tag('script');
+
         return $output;
     }
 

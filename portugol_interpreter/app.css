@@ -1,1 +1,3 @@
-
+@import url("../node_modules/jquery.terminal/css/jquery.terminal.css");
+@import url("../node_modules/codemirror/lib/codemirror.css");
+@import url("../node_modules/codemirror/theme/eclipse.css");
