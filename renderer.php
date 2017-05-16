@@ -215,11 +215,10 @@ class qtype_qportugol_format_editor_renderer extends plugin_renderer_base {
 
     public function response_area_read_only($name, $qa, $step, $lines, $context) {
         $ret = '';
-        $ret .= html_writer::end_tag('link');
-        $ret .= html_writer::tag('div', $this->prepare_response($name, $qa, $step, $context), array('id'=> 'codigo', 'class' => $this->class_name() . ' qtype_qportugol_response readonly'));
-        // $ret .= html_writer::start_tag('script', array('src' =>
-        //         '../../question/type/qportugol/portugol_interpreter/main.js'));
-        // $ret .= html_writer::end_tag('script');
+        $ret .= html_writer::tag('textarea', $this->prepare_response($name, $qa, $step, $context), array('id'=>'codigo', 'class' => $this->class_name() . ' qtype_qportugol_response readonly'));
+        $ret .= html_writer::start_tag('script', array('src' =>
+                '../../question/type/qportugol/portugol_interpreter/review.js'));
+        $ret .= html_writer::end_tag('script');
         return $ret;
     }
 
