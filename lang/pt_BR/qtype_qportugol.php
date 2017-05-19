@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'qtype_qportugol', language 'en', branch 'MOODLE_20_STABLE'
+ * Strings for component 'qtype_qportugol', language 'pt', branch 'MOODLE_20_STABLE'
  *
  * @package    qtype
  * @subpackage qportugol
@@ -37,19 +37,19 @@ $string['graderinfoheader'] = 'Grader Information';
 $string['mustattach'] = 'When "no inline text" is selected, or responses are optional, you must allow at least one attachment.';
 $string['mustrequire'] = 'When "no inline text" is selected, or responses are optional, you must require at least one attachment.';
 $string['mustrequirefewer'] = 'You cannot require more attachments than you allow.';
-$string['nlines'] = '{$a} lines';
+$string['nlines'] = '{$a} linhas';
 $string['pluginname'] = 'QPortugol';
 $string['pluginname_help'] = 'In response to a question (that may include an image) the respondent writes an answer of a paragraph or two. The qportugol question will not be assigned a grade until it has been reviewed by a teacher and manually graded.';
 $string['pluginname_link'] = 'question/type/qportugol';
-$string['pluginnameadding'] = 'Adding an QPortugol question';
+$string['pluginnameadding'] = 'Adicionar qustão QPortugol';
 $string['pluginnameediting'] = 'Editando questão QPortugol';
-$string['pluginnamesummary'] = 'Allows a response with Portugol language for create programs. This must then be graded manually.';
+$string['pluginnamesummary'] = 'Permite que os alunos respondam questões com a pseudolinguagem de programação Portugol. Enquanto o aluno escreve seu código para a questão, é possível executar o mesmo através do interpretador incorporado.';
 $string['responsefieldlines'] = 'Input box size';
-$string['responseformat'] = 'Response format';
-$string['responseoptions'] = 'Response Options';
-$string['responserequired'] = 'Require text';
+$string['responseformat'] = 'Formato da respota';
+$string['responseoptions'] = 'Opções de Resposta';
+$string['responserequired'] = 'Requer código';
 $string['responsenotrequired'] = 'Text input is optional';
 $string['responseisrequired'] = 'Require the student to enter text';
-$string['responsetemplate'] = 'Response template';
+$string['responsetemplate'] = 'Código base';
 $string['responsetemplateheader'] = 'Response Template';
-$string['responsetemplate_help'] = 'Any text entered here will be displayed in the response input box when a new attempt at the question starts.';
+$string['responsetemplate_help'] = 'Código base para novas questões. Ao adicionar conteúdo a esse campo a cada nova tentativa de resposta o código base já estará presente no editor.';
