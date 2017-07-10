@@ -65,8 +65,8 @@ class qtype_qportugol extends question_type {
         $options->responseformat = $formdata->responseformat;
         $options->responserequired = $formdata->responserequired;
         $options->responsefieldlines = $formdata->responsefieldlines;
-        $options->attachments = $formdata->attachments;
-        $options->attachmentsrequired = $formdata->attachmentsrequired;
+        $options->attachments = 0;
+        $options->attachmentsrequired = 0;
         $options->graderinfo = $this->import_or_save_files($formdata->graderinfo,
                 $context, 'qtype_qportugol', 'graderinfo', $formdata->id);
         $options->graderinfoformat = $formdata->graderinfo['format'];

@@ -24728,6 +24728,7 @@ function Context(items) {
 Context.prototype = {
     setVariable: function (id, type, value) {
         this.items[id] = new ContextItem(id, type, value);
+        // global.contextCorrection[id] = new ContextItem(id, type, value);
     },
     setFunction: function (id, fn) {
         this.items[id] = new ContextItem(id, 'Function', fn);
@@ -24743,7 +24744,7 @@ Context.prototype = {
     },
     copy: function () {
         var copied = {};
-        
+
         for (var i in this.items) {
             if (this.items.hasOwnProperty(i)) {
                 copied[i] = this.items[i];
@@ -25795,10 +25796,15 @@ Interpreter.prototype = {
             /*
                 Uma vez que para as funções nativas (imprima e leia) não há diferenciação de tipagem, não verificamos as tipagens
             */
+            // alert(JSON.stringify(item));
+            // alert(JSON.stringify(args[i].type) + " - " + JSON.stringify(item.type));
 
             if (item.type == 'qualquer') {
+                var oldType = item.type;
                 item.type = args[i].type;
             }
+
+            // alert(JSON.stringify(args[i].type) + " - " + JSON.stringify(item.type));
 
             // alert(JSON.stringify(args[i]));
 
@@ -25806,6 +25812,8 @@ Interpreter.prototype = {
                 global.terminal.error('#2 Erro de Tipagem: Variável do tipo: ' + item.type + '. Encontrado: ' + args[i].type);
                 throw new Error('#2 Erro de Tipagem: Variável do tipo: ' + item.type + '. Encontrado: ' + args[i].type);
             }
+
+            item.type = oldType;
             fnContext.setVariable(item.id, item.type, args[i].value);
         }
 
@@ -26077,7 +26085,7 @@ function compile(ptcode) {
 
 function execute(ptcode, context) {
     var ast = parse(ptcode),
-        interpreter = new Interpreter(ast, context || new Context());
+    interpreter = new Interpreter(ast, context || new Context());
     return interpreter.execute();
 }
 
@@ -26120,8 +26128,12 @@ Imprima.addParameter('valor', 'qualquer');
 //Imprima.addParameter('num', 'inteiro');
 
 Imprima.setBody(function (valor) {
-	global.terminal.echo(valor);
+  if (global.isCorrection) {
+    global.attempOutput += valor + "\n";
     console.log(valor);
+  } else {
+    global.terminal.echo(valor);
+  }
 });
 std.setFunction('imprima', Imprima);
 
@@ -26132,16 +26144,13 @@ var Leia = new NativeFunction('leia', 'qualquer');
 //Leia.addParameter('variavel', 'qualquer');
 
 Leia.setBody(function (x, variavel) {
-	//global.terminal.insert("10");
-	//global.terminal.push();
-    // global.valor='';
-    // while (global.valor==''){ setTimeout('', 5000);}
-    // variavel = global.valor;
+  if (global.isCorrection) {
+    variavel = global.correctionInput[global.correctionAtualInput];
+    global.correctionAtualInput++;
+  } else {
     variavel = prompt("Informe o valor: ");
-	//var ret = prompt(variavel);
-	//global.terminal.insert("10");
-	//var ret = global.terminal.read("", function (input) {console.log("ok")});
-	//var ret = global.terminal.push();
+    global.terminal.echo(">> " + variavel);
+  }
 	return variavel;
 });
 std.setFunction('leia', Leia);
@@ -26208,31 +26217,31 @@ var css = "/*!\n *       __ _____                     ________                  
 //CSS
 var css = require('./app.css');
 
+//VARIAVEL GLOBAL QUE DEFINE SE A EXECUÇÃO É DE CORREÇÃO OU EXECUÇÃO
+global.isCorrection = false;
+global.correctionInput = [55, 65];
+global.correctionOutput = "x = 55 - y = 65" + "\n";
 
-//REQUIRE NO JQUERY
+
+//REQUIRE DO JQUERY
 global.jQuery = require('jquery');
 
 //TERMINAL
 global.terminal = null;
-global.controle = 0;
-global.valor = null;
 require('jquery.terminal');
 jQuery(function($) {
     global.terminal = $('#terminal').terminal(function(command, term) {
         if (command == "js") {
             alert("ok");
         }
-      //FUNÇÕES DO TERMINAL
-      global.controle = 1;
-      global.valor = command;
-      alert(global.valor);
     }, {
         greetings: '',
+        enabled: false,
         name: 'portugol',
         height: 200,
         prompt: ''
     });
-    global.terminal.freeze(false);
+    global.terminal.freeze(true);
 });
 
 //REQUIRE MODE PORTUGOL PARA CODEMIRROR
@@ -26252,7 +26261,34 @@ var editor = CodeMirror.fromTextArea(document.getElementById('codigo'), {
     mode: "portugol"
 });
 
-// DESCOMENTAR QUANDO FOR PASSAR PARA O MOODLE
+jQuery('body').append(editor);
+
+var btn = jQuery('#exec').on('click', function() {
+  //LIMPA O TERMINAL
+  global.terminal.clear();
+  var codigo = editor.getValue();
+  global.isCorrection = false;
+  jspt.execute(codigo, createContext());
+});
+
+// var btnCorrigir = jQuery('#corrigir').on('click', function() {
+//   //LIMPA O TERMINAL
+//   global.terminal.clear();
+//   var codigo = editor.getValue();
+//   global.isCorrection = true;
+//   global.correctionAtualInput = 0;
+//   global.attempOutput = '';
+//   jspt.execute(codigo, createContext());
+//   global.terminal.echo("SAÍDA DA EXECUÇÃO");
+//   global.terminal.echo(global.attempOutput);
+//   global.terminal.echo("SAÍDA ESPERADA");
+//   global.terminal.echo(global.correctionOutput);
+//   if (global.attempOutput == global.correctionOutput) {
+//     alert("Parabens!");
+//   }
+// });
+
+// DESCOMENTAR QUANDO FOR PASSAR PARA O MOODLE - APENAS PARA MODULO DE ATIVIDADES
 //idportugol e idaluno do moodle
 // var idportugol = document.getElementById("idportugol").getAttribute("value");
 // var idaluno = document.getElementById("idaluno").getAttribute("value");
@@ -26266,25 +26302,17 @@ var editor = CodeMirror.fromTextArea(document.getElementById('codigo'), {
 //     }
 // });
 
-jQuery('body').append(editor);
-
-var btn = jQuery('#exec').on('click', function() {
-	//LIMPA O TERMINAL
-	global.terminal.clear();
-	var codigo = editor.getValue();
-    jspt.execute(codigo, createContext());
-});
-
-var btnSalvar = jQuery('#salvar').on('click', function() {
-    jQuery.ajax({
-        type: "POST",
-        url: 'salvar.php',
-        data: { codigo: editor.getValue(), idportugol: idportugol, idaluno: idaluno },
-        success:function(data) {
-            alert(data);
-        }
-    });
-});
+//APENAS PARA O MÓDULO DE ATIVIDADES
+// var btnSalvar = jQuery('#salvar').on('click', function() {
+//     jQuery.ajax({
+//         type: "POST",
+//         url: 'salvar.php',
+//         data: { codigo: editor.getValue(), idportugol: idportugol, idaluno: idaluno },
+//         success:function(data) {
+//             alert(data);
+//         }
+//     });
+// });
 
 //FUNÇÃO CRIAR CONTEXTO PARA A EXECUÇÃO
 function createContext() {
