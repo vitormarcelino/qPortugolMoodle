@@ -38,32 +38,17 @@ class qtype_qportugol_edit_form extends question_edit_form {
     protected function definition_inner($mform) {
         $qtype = question_bank::get_qtype('qportugol');
 
-        $mform->addElement('header', 'responseoptions', get_string('responseoptions', 'qtype_qportugol'));
-        $mform->setExpanded('responseoptions');
-
-        $mform->addElement('select', 'responseformat',
-                get_string('responseformat', 'qtype_qportugol'), $qtype->response_formats());
-        $mform->setDefault('responseformat', 'editor');
-
-        $mform->addElement('select', 'responserequired',
-                get_string('responserequired', 'qtype_qportugol'), $qtype->response_required_options());
-        $mform->setDefault('responserequired', 1);
-        $mform->disabledIf('responserequired', 'responseformat', 'eq', 'noinline');
-
-        $mform->addElement('select', 'responsefieldlines',
-                get_string('responsefieldlines', 'qtype_qportugol'), $qtype->response_sizes());
-        $mform->setDefault('responsefieldlines', 15);
-        $mform->disabledIf('responsefieldlines', 'responseformat', 'eq', 'noinline');
-
         $mform->addElement('header', 'responsetemplateheader', get_string('responsetemplateheader', 'qtype_qportugol'));
-        $mform->addElement('editor', 'responsetemplate', get_string('responsetemplate', 'qtype_qportugol'),
+        $mform->addElement('textarea', 'responsetemplate', get_string('responsetemplate', 'qtype_qportugol'),
                 array('rows' => 10),  array_merge($this->editoroptions, array('maxfiles' => 0)));
+
         $mform->addHelpButton('responsetemplate', 'responsetemplate', 'qtype_qportugol');
 
         $mform->addElement('header', 'graderinfoheader', get_string('graderinfoheader', 'qtype_qportugol'));
-        $mform->setExpanded('graderinfoheader');
+        $mform->setExpanded('graderinfoheader') ;
         $mform->addElement('editor', 'graderinfo', get_string('graderinfo', 'qtype_qportugol'),
                 array('rows' => 10), $this->editoroptions);
+
     }
 
     protected function data_preprocessing($question) {
@@ -72,12 +57,6 @@ class qtype_qportugol_edit_form extends question_edit_form {
         if (empty($question->options)) {
             return $question;
         }
-
-        $question->responseformat = $question->options->responseformat;
-        $question->responserequired = $question->options->responserequired;
-        $question->responsefieldlines = $question->options->responsefieldlines;
-        $question->attachments = $question->options->attachments;
-        $question->attachmentsrequired = $question->options->attachmentsrequired;
 
         $draftid = file_get_submitted_draft_itemid('graderinfo');
         $question->graderinfo = array();
@@ -93,10 +72,7 @@ class qtype_qportugol_edit_form extends question_edit_form {
         $question->graderinfo['format'] = $question->options->graderinfoformat;
         $question->graderinfo['itemid'] = $draftid;
 
-        $question->responsetemplate = array(
-            'text' => $question->options->responsetemplate,
-            'format' => $question->options->responsetemplateformat,
-        );
+        $question->responsetemplate = $question->options->responsetemplate;
 
         return $question;
     }

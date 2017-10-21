@@ -36,17 +36,6 @@ require_once($CFG->dirroot . '/question/type/questionbase.php');
  */
 class qtype_qportugol_question extends question_with_responses {
 
-    public $responseformat;
-
-    /** @var int Indicates whether an inline response is required ('0') or optional ('1')  */
-    public $responserequired;
-
-    public $responsefieldlines;
-    public $attachments;
-
-    /** @var int The number of attachments required for a response to be complete. */
-    public $attachmentsrequired;
-
     public $graderinfo;
     public $graderinfoformat;
     public $responsetemplate;
@@ -61,7 +50,7 @@ class qtype_qportugol_question extends question_with_responses {
      * @return qtype_qportugol_format_renderer_base the response-format-specific renderer.
      */
     public function get_format_renderer(moodle_page $page) {
-        return $page->get_renderer('qtype_qportugol', 'format_' . $this->responseformat);
+        return $page->get_renderer('qtype_qportugol', 'format_editor');
     }
 
     public function get_expected_data() {

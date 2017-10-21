@@ -23,15 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['allowattachments'] = 'Allow attachments';
-$string['attachmentsoptional'] = 'Attachments are optional';
-$string['attachmentsrequired'] = 'Require attachments';
-$string['attachmentsrequired_help'] = 'This option specifies the minimum number of attachments required for a response to be considered gradable.';
 $string['formateditor'] = 'Código Portugol';
-$string['formateditorfilepicker'] = 'HTML editor with file picker';
-$string['formatmonospaced'] = 'Plain text, monospaced font';
-$string['formatnoinline'] = 'No inline text';
-$string['formatplain'] = 'Plain text';
 $string['graderinfo'] = 'Information for graders';
 $string['graderinfoheader'] = 'Grader Information';
 $string['mustattach'] = 'When "no inline text" is selected, or responses are optional, you must allow at least one attachment.';
@@ -39,17 +31,14 @@ $string['mustrequire'] = 'When "no inline text" is selected, or responses are op
 $string['mustrequirefewer'] = 'You cannot require more attachments than you allow.';
 $string['nlines'] = '{$a} linhas';
 $string['pluginname'] = 'QPortugol';
-$string['pluginname_help'] = 'In response to a question (that may include an image) the respondent writes an answer of a paragraph or two. The qportugol question will not be assigned a grade until it has been reviewed by a teacher and manually graded.';
+$string['pluginname_help'] = 'Tipo de questão que permite que o aluno desenvolva algoritmos em Portugol.';
 $string['pluginname_link'] = 'question/type/qportugol';
 $string['pluginnameadding'] = 'Adicionar qustão QPortugol';
 $string['pluginnameediting'] = 'Editando questão QPortugol';
-$string['pluginnamesummary'] = 'Permite que os alunos respondam questões com a pseudolinguagem de programação Portugol. Enquanto o aluno escreve seu código para a questão, é possível executar o mesmo através do interpretador incorporado.';
-$string['responsefieldlines'] = 'Input box size';
+$string['pluginnamesummary'] = 'Permite que os alunos respondam questões com a pseudolinguagem de programação Portugol. Enquanto o aluno escreve seu código para a questão, é possível executar o mesmo através do interpretador incorporado.<br><br>Desenvolvido por Vitor Marcelino, Leonardo Menezes e Guna Alexander';
 $string['responseformat'] = 'Formato da respota';
 $string['responseoptions'] = 'Opções de Resposta';
 $string['responserequired'] = 'Requer código';
-$string['responsenotrequired'] = 'Text input is optional';
-$string['responseisrequired'] = 'Require the student to enter text';
 $string['responsetemplate'] = 'Código base';
-$string['responsetemplateheader'] = 'Response Template';
+$string['responsetemplateheader'] = 'Código Inicial';
 $string['responsetemplate_help'] = 'Código base para novas questões. Ao adicionar conteúdo a esse campo a cada nova tentativa de resposta o código base já estará presente no editor.';

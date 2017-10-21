@@ -19,7 +19,7 @@
  *
  * @package    qtype
  * @subpackage qportugol
- * @copyright  2005 Mark Nielsen
+ * @copyright  2017 Vitor Marcelino
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,7 +32,7 @@ require_once($CFG->libdir . '/questionlib.php');
 /**
  * The qportugol question type.
  *
- * @copyright  2005 Mark Nielsen
+ * @copyright  2017 Vitor Marcelino
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_qportugol extends question_type {
@@ -46,6 +46,7 @@ class qtype_qportugol extends question_type {
 
     public function get_question_options($question) {
         global $DB;
+
         $question->options = $DB->get_record('qtype_qportugol_options',
                 array('questionid' => $question->id), '*', MUST_EXIST);
         parent::get_question_options($question);
@@ -62,26 +63,15 @@ class qtype_qportugol extends question_type {
             $options->id = $DB->insert_record('qtype_qportugol_options', $options);
         }
 
-        $options->responseformat = $formdata->responseformat;
-        $options->responserequired = $formdata->responserequired;
-        $options->responsefieldlines = $formdata->responsefieldlines;
-        $options->attachments = 0;
-        $options->attachmentsrequired = 0;
         $options->graderinfo = $this->import_or_save_files($formdata->graderinfo,
                 $context, 'qtype_qportugol', 'graderinfo', $formdata->id);
         $options->graderinfoformat = $formdata->graderinfo['format'];
-        $options->responsetemplate = $formdata->responsetemplate['text'];
-        $options->responsetemplateformat = $formdata->responsetemplate['format'];
+        $options->responsetemplate = $formdata->responsetemplate;//['text'];
         $DB->update_record('qtype_qportugol_options', $options);
     }
 
     protected function initialise_question_instance(question_definition $question, $questiondata) {
         parent::initialise_question_instance($question, $questiondata);
-        $question->responseformat = $questiondata->options->responseformat;
-        $question->responserequired = $questiondata->options->responserequired;
-        $question->responsefieldlines = $questiondata->options->responsefieldlines;
-        $question->attachments = $questiondata->options->attachments;
-        $question->attachmentsrequired = $questiondata->options->attachmentsrequired;
         $question->graderinfo = $questiondata->options->graderinfo;
         $question->graderinfoformat = $questiondata->options->graderinfoformat;
         $question->responsetemplate = $questiondata->options->responsetemplate;
